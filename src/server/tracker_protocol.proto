@@ -1,0 +1,101 @@
+package fastdcs;
+
+// run command 'protoc -I=. --cpp_out=. tracker_protocol.proto' 
+
+//
+// tracker communicator protocol
+// Warning: do not change the existing field of numerical sequence
+// 
+
+enum OperateType {
+	UNKNOWN_OPERATE = 0;
+	NEW_OPERATE = 1;
+  DELETE_OPERATE = 2;
+  MODIFY_OPERATE = 3;
+}
+
+enum PriorityType {
+  IDLE_PRIORITY = 0;
+  BELOW_PRIORITY = 1;
+  NORMAL_PRIORITY = 2;
+  ABOVE_NORMAL_PRIORITY = 3;
+  REALTIME_PRIORITY = 4;
+}
+
+// A key corresponds to a value
+message KeyValuePair {
+  optional bytes key = 1;
+  optional bytes value = 2;
+}
+
+// A key contain multiple value
+message KeyValuesPair {
+  optional bytes key = 1;
+  repeated bytes value = 2;
+}
+
+// FastDCS Task
+message FdcsTask {
+  required string task_id = 1 [default = ""];
+  optional int64 lease_time = 2 [default = 0];
+  repeated KeyValuesPair key_values_pairs = 3;
+}
+
+// Tracker types
+enum TrackerType {
+	UNKNOWN_TRACKER = 0;
+  MASTER_TYPE = 1;
+  WORKER_TYPE = 2;
+  CLIENT_TYPE = 3;
+}
+
+// Protocol
+enum ProtocolType {
+	UNKNOWN_PROTOCOL = 0;
+	ELECTION = 1;
+  COORDINATOR = 2;
+  MASTER_ASK_TRACKER = 3;       // Master asks who is the Tracker
+  MASTER_REPORT_STATUS = 4;     // Master report to the Tracker status
+  WORKER_ASK_TRACKER = 5;       // Worker asks who is the Tracker
+  WORKER_REPORT_STATUS = 6;     // Worker to the Tracker report
+  CREATE_JOB_ID = 7;            // Request generate JobID number
+  COMMIT_JOB = 8;               // Submit Job
+  SYNC_TASK_DUPLICATE = 9;      // From the Primary service to synchronize Task copy data
+  REQUEST_TASK_DUPLICATE = 10;  // From the Primary service to synchronize Task copy data
+  WORKER_REQUEST_TASK = 11;     // Request task
+  TASK_COMPLETED = 12;          // Complete the task
+  ASK_TASK_STATUS = 13;         // Task status
+  MASTER_JOIN_GROUP = 14;       // New Master services Master services group
+  MASTER_GROUP_CHANGED = 15;    // Changes in the Master unit
+}
+
+message TrackerStatus {
+  optional string socket_addr = 1 [default = ""];
+  optional bool active = 2 [default = false];
+  optional TrackerType tracker_type = 3 [default = UNKNOWN_TRACKER];
+  optional string start_time = 4 [default = ""];
+  optional string run_time = 5 [default = ""];
+  optional int32 process_num = 6 [default = 0];
+  optional int32 free_disk = 7 [default = 0];
+  optional int32 total_disk = 8 [default = 0];
+  optional int32 free_memory = 9 [default = 0];
+  optional int32 total_memory = 10 [default = 0];
+}
+
+message TrackerProtocol
+{
+	required int64 id = 1 [default = 0];
+	optional int64 time = 2 [default = 0];
+	optional ProtocolType protocol_type = 3 [default = UNKNOWN_PROTOCOL];
+	optional TrackerType tracker_type = 4 [default = UNKNOWN_TRACKER];
+	// Socket sending a request, for example: '172.0.0.1:2000'
+	optional string request_sock_addr = 5 [default = ""];
+	optional string request_args = 6 [default = ""];
+	// All socket responding to the request, 
+  // for example: '172.0.0.1:2001;172.0.0.1:2002;172.0.0.1:2003'
+	optional string response_sock_addr = 7 [default = ""];
+	optional int32 forwarding_sock_fd = 8 [default = -1];
+	optional string response_result = 9 [default = ""]; // 结果
+  repeated TrackerStatus tracker_status = 10;
+  repeated KeyValuesPair key_values_pairs = 11;
+}

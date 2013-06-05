@@ -1,0 +1,4 @@
+This demo program demonstrates the use of FastDCS distributed computing framework, 
+through 3 Master servers for n Worker Server task scheduling and calculation of Word sort.
+
+More content, please visit http://www.FastDCS.com/

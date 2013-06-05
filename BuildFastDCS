@@ -1,0 +1,56 @@
+Build FastDCS(Fast Distributed Computing System)
+Version 0.1.1
+Updated 2013-06-06 by Liu Xun (my@liuxun.org)
+
+Introduction
+Build/Install Dependencies
+Install GCC
+Install CMake
+Install Protobuf
+Build FastDCS
+
+Introduction
+FastDCS can be built and run on a modern Linux system (with kernel version >= 2.6).
+
+Build/Install Dependencies
+CMake is used to manage and build the project.
+Google Protocol Buffers is used for inter-worker communication and disk storage.
+Install GCC
+On Cygwin, run setup.exe and select gcc and binutils
+On Debian/Ubuntu Linux
+sudo apt-get install gcc binutils
+On Mac OS X, install XCode
+Install CMake
+It is OK to install CMake in from binary package. But please be aware that we need a version larger than 2.8.0, because we used Google protocol buffers in FastDCS and older versions of CMake does not support protocol buffers.
+
+To install CMake from binary packages using package managers:
+You can also download binary and source packages of CMake from: http://www.cmake.org/cmake/resources/software.html.
+
+Install Protobuf
+Download source code package (I am using protobuf-2.3.0.tar.bz2) from http://code.google.com/p/protobuf
+Unpack the source code anywhere (e.g., ./protobuf-2.3.0)
+You need to install protobuf into the standard path, e.g., /usr/local, because we need CMake be able to find the protobuf compiler:
+$ cd protobuf-2.3.0
+./configure
+make
+sudo make install
+Add `export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/` to ~/.bashrc
+Add `/usr/local/lib/` to `/etc/ld.so.conf`
+$ ldconfig
+
+Checkout the code for http://www.FastDCS.com/
+Setup third-party libs:
+Open FastDCS/CMakeLists.txt in a text editor. Find the line
+set(THIRD_PARTY_DIR "/home/liuxun/3rd-party")
+and replace /home/liuxun/3rd-party to where you have installed your 3rd-party libraries (referred to as /home/you/3rd-party in above section).
+Setup the installation destination
+If you want to use make install to install FastDCS into a directory, you tell CMake by replacing the line:
+set(CMAKE_INSTALL_PREFIX "/home/liuxun/FastDCS")
+and replace /home/liuxun/FastDCS by the installation directory, say, /home/you/3rd-party/FastDCS.
+Build FastDCS
+With CMake, we usually build in a directory different from the source directory:
+mkdir build
+cd build
+cmake ..
+make
+make install

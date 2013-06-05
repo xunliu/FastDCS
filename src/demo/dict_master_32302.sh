@@ -1,0 +1,1 @@
+./dict_master -f dict_master_32302.conf

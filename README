@@ -1,0 +1,16 @@
+Copyright (C) 2013, Liu Xun. <my@liuxun.org>
+
+FastDCS may be copied only under the terms of the GNU General
+Public License V3, which may be found in the FastDCS source kit.
+Please visit the FastDCS Home Page http://www.FastDCS.com/
+for more detail.
+
+FastDCS is an open source distributed computing system (DCS) based on the real-time flow.
+
+Its main features include: server cluster scheduling, parallel computing, distributed services, using high-performance and high-availability design, it can solve the problem of mass data computing and distributed services need. FastDCS suitable for real-time analysis of the images and video streams, data mining and data analysis services.
+
+FastDCS two roles: Management Services Master and work Woker Management Service is responsible for scheduling and distribution of tasks to the worker. The function of the worker is calculated, comprising: receiving computing tasks, the calculation processing, the feedback calculation results.
+
+Master of management services and work service Woker can contain one or more servers, point-to-point service between all work. Woker of management services Master and work in a server cluster can be anywhere at any time to add or remove services without affecting the normal operation of online services. In the service cluster running multiple management services Master can effectively ensure the system's high availability, data and services in all the master servers are identical, respectively, to manage part of the service cluster Work server, when the Master Service service adjustments, add and remove a small sphere of influence.
+
+In the service cluster can run multiple services Woker linear growth in the calculation processing power and reduce the computing cycles, to be added to the Worker service will automatically find the smallest load Master server, accept the Master's service dispatch, adding cluster computing , when to delete Worker service, Master server the the Worker service load computing tasks re-scheduling to other worker nodes.
