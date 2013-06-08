@@ -70,10 +70,9 @@
 <li>Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master<font color="#F00"><b>[注1]</b></font>节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。</li>
 <li>当服务集群中空闲时，Primary Master节点将会通过调用开发者自定义ImportTaskUDF函数，将新的计算任务导入到计算集群中等待处理。</li>
 <li>当Worker节点接收到Master节点分发的计算任务时，将会通过调用开发者自定义ComputingUDF函数，完成计算任务的运算处理。</li>
-<li>当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统，如数据库或FastDFS<font color="#F00"><b>[注2]</b></font>中。</li>
+<li>当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统中。</li>
 </ul><p><font color="#F00"><b>[注1]</b></font>：此处的Master服务器是指Primary Master或Secondary master服务器。</p>
 
-<p><font color="#F00"><b>[注2]</b></font>：FastDFS是由余庆同学开发的大容量分布式文件系统。</p>
 
 <h2>
 <a name="-3" class="anchor" href="#-3"><span class="octicon octicon-link"></span></a>系统容错处理</h2>
@@ -93,15 +92,8 @@
 
 <p>FastDCS使用GNU General Public License V3通用公共授权。</p>
 
-<ul>
-<li>允许以任何目的自由运行此程序;</li>
-<li>允许以学习为目的，对程序进行修改的自由;</li>
-<li>允许再发行软件副本的自由;</li>
-<li>允许改进此软件，并公开发布改进的自由;</li>
-<li>软件自始至终都以开放源代码形式发布;</li>
-<li>软件不得用作商业发售;</li>
-<li>更多授权说明请浏览通用性公开许可证(General Public License，简称GPL)。</li>
-</ul><p>Copyright (C) 2013, Liu Xun. <a href="mailto:my@liuxun.org">my@liuxun.org</a></p>
+
+<p>Copyright (C) 2013, Liu Xun. <a href="mailto:my@liuxun.org">my@liuxun.org</a></p>
         </section>
 
         <aside id="sidebar">
