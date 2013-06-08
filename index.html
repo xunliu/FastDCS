@@ -13,7 +13,7 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>FastDCS - 分布式计算系统</title>
+    <title>FastDCS by liuxunorg</title>
   </head>
 
   <body>
@@ -28,10 +28,7 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <hr><h2>
-<a name="title-fastdcs---" class="anchor" href="#title-fastdcs---"><span class="octicon octicon-link"></span></a>title: "FastDCS - 分布式计算系统"</h2>
-
-<p>FastDCS是一个使用C++开发的分布式计算系统，使用它可以快速的解决海量数据的并行计算问题。 </p>
+          <p>FastDCS是一个使用C++开发的分布式计算系统，使用它可以快速的解决海量数据的并行计算问题。 </p>
 
 <p>FastDCS的设计宗旨是用最快捷的方式完成分布式计算系统的开发和部署工作，如同它的名称Fast Distributed Computing System。</p>
 
@@ -70,13 +67,13 @@
 <ul>
 <li>Primary Master节点管理了服务集群中的所有计算任务</li>
 <li>Primary Master节点将一部分计算任务副本分发给Secondary master节点进行管理，当一段时间内该任务未完成计算，Primary Master节点将会注销这个任务副本，并将这个副本重新分发给其他的Secondary master节点。</li>
-<li>Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[注1]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。</li>
+<li>Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[<b>注1</b> ]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。</li>
 <li>当服务集群中空闲时，Primary Master节点将会通过调用开发者自定义ImportTaskUDF函数，将新的计算任务导入到计算集群中等待处理。</li>
 <li>当Worker节点接收到Master节点分发的计算任务时，将会通过调用开发者自定义ComputingUDF函数，完成计算任务的运算处理。</li>
-<li>当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统，如数据库或分布式文件存储系统FastDFS[注2]中。</li>
-</ul><p>[注1]：此处的Master服务器是指Primary Master或Secondary master服务器。</p>
+<li>当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统，如数据库或分布式文件存储系统FastDFS[<b>注2</b> ]中。</li>
+</ul><p>[<b>注1</b>]：此处的Master服务器是指Primary Master或Secondary master服务器。</p>
 
-<p>[注2]：FastDFS是由余庆同学开发的大容量分布式文件系统。</p>
+<p>[<b>注2</b>]：FastDFS是由余庆同学开发的大容量分布式文件系统。</p>
 
 <h2>
 <a name="-3" class="anchor" href="#-3"><span class="octicon octicon-link"></span></a>系统容错处理</h2>
