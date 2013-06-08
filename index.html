@@ -71,7 +71,7 @@
 <li>当服务集群中空闲时，Primary Master节点将会通过调用开发者自定义ImportTaskUDF函数，将新的计算任务导入到计算集群中等待处理。</li>
 <li>当Worker节点接收到Master节点分发的计算任务时，将会通过调用开发者自定义ComputingUDF函数，完成计算任务的运算处理。</li>
 <li>当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统中。</li>
-</ul><p><font color="#F00"><b>[注1]</b></font>：此处的Master服务器是指Primary Master或Secondary master服务器。</p>
+</ul><p><font color="#F00"><b>[注1]</b></font>：此处的Master是指Primary Master或Secondary master节点。</p>
 
 
 <h2>
