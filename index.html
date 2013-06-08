@@ -1,59 +1,129 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="FastDCS : " />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-    <title>FastDCS - Fast Distributed Computing System</title>
+    <title>FastDCS - 分布式计算系统 by liuxunorg</title>
   </head>
 
   <body>
+    <header>
+      <div class="inner">
+        <h1>FastDCS - 分布式计算系统</h1>
+        <h2>Distributed Computing</h2>
+        <a href="https://github.com/liuxunorg/FastDCS" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/liuxunorg/FastDCS">View on GitHub</a>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="fastdcs---" class="anchor" href="#fastdcs---"><span class="octicon octicon-link"></span></a>FastDCS - 分布式计算系统</h1>
 
-          <h1 id="project_title">FastDCS</h1>
-          <h2 id="project_tagline">Fast Distributed Computing System</h2>
+<p>FastDCS是一个使用C++开发的分布式计算系统，使用它可以快速的解决海量数据的并行计算问题。 </p>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/liuxunorg/FastDCS/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/liuxunorg/FastDCS/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+<p>FastDCS的设计宗旨是用最快捷的方式完成分布式计算系统的开发和部署工作，如同它的名称Fast Distributed Computing System。</p>
+
+<p>FastDCS通过简洁而有效的设计，为开发者提供一套简洁而有效的分布式计算框架，开发者只需要定制由FastDCS提供的三个用户自定义UDF函数（User defined function），就可以完成整个分布式系统的开发工作，FastDCS同样也是非常容易进行部署的，开发者可以轻松的将FastDCS系统部署在很多台Linux服务器中的，FastDCS会自动将这些Linux服务器建立起服务集群，以分布式运行的方式完成开发者的计算任务。</p>
+
+<h2>
+<a name="" class="anchor" href="#"><span class="octicon octicon-link"></span></a>系统组成结构</h2>
+
+<p>从系统组成划分的角度来看，FastDCS包括了管理节点（Master）和工作节点（Worker）</p>
+
+<ul>
+<li>管理节点Master对整个计算集群的服务状态、任务分发、计算调度等服务进行管理。</li>
+<li>工作节点Worker作为计算单元接受Master服务器的管理，完成整个计算集群的计算任务。</li>
+</ul><h2>
+<a name="-1" class="anchor" href="#-1"><span class="octicon octicon-link"></span></a>系统运行方式</h2>
+
+<ul>
+<li>管理节点Master在多台服务器中以主从模式运行
+
+<ul>
+<li>至少需要提供一台Master节点，建议同时运行三台Master节点会达到最佳的可靠性和性能。</li>
+<li>多台Master节点会自动选举出主节点（Primary master）和从节点（Secondary master）。</li>
+<li>每台Master节点分别管理一部分Worker节点，达到了系统的负载均衡的同时也提升了系统的整体性能。</li>
+</ul>
+</li>
+<li>工作节点Worker在多台服务器中以并行模式运行
+
+<ul>
+<li>至少需要提供一台Worker节点，目前可以支持上百台的Woker节点进行并行工作。</li>
+<li>Worker节点会主动寻找负载较小的Master节点，接受计算任务调度，进行计算任务运算。</li>
+</ul>
+</li>
+</ul><h2>
+<a name="-2" class="anchor" href="#-2"><span class="octicon octicon-link"></span></a>计算任务调度方式</h2>
+
+<ul>
+<li>Primary Master节点管理了服务集群中的所有计算任务</li>
+<li>Primary Master节点将一部分计算任务副本分发给Secondary master节点进行管理，当一段时间内该任务未完成计算，Primary Master节点将会注销这个任务副本，并将这个副本重新分发给其他的Secondary master节点。</li>
+<li>Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[注1]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。</li>
+<li>当服务集群中空闲时，Primary Master节点将会通过调用开发者自定义ImportTaskUDF函数，将新的计算任务导入到计算集群中等待处理。</li>
+<li>当Worker节点接收到Master节点分发的计算任务时，将会通过调用开发者自定义ComputingUDF函数，完成计算任务的运算处理。</li>
+<li>当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统，如数据库或分布式文件存储系统FastDFS[注2]中。</li>
+</ul><p>[注1]：此处的Master服务器是指Primary Master或Secondary master服务器。</p>
+
+<p>[注2]：FastDFS是由余庆同学开发的大容量分布式文件系统。</p>
+
+<h2>
+<a name="-3" class="anchor" href="#-3"><span class="octicon octicon-link"></span></a>系统容错处理</h2>
+
+<ul>
+<li>当Primary master节点发生异常停止服务时，Secondary master节点会重新选举出新的Primary master节点接替工作，避免了服务集群的单点故障的问题，当故障服务器恢复后可以重新参加到集群的工作中。</li>
+<li>Worker节点可以根据环境的需要进行动态的增减，服务集群的计算能力和计算周期也随之发生线性的变化。</li>
+<li>在Master和Worker节点发生动态调整的时候，只会影响极小部分的计算任务，不会影响服务集群的正常运行，受影响的小部分计算结果也会由系统判断是否采纳或重新进行计算。</li>
+<li>当发生网络延时或Worker节点异常造成计算任务超时的情况下，Master节点会将计算任务重新分发给其他Worker节点，即使多台Worker节点运算同一个任务时，Master也只会采纳其中有效的计算结果。</li>
+</ul><h2>
+<a name="-4" class="anchor" href="#-4"><span class="octicon octicon-link"></span></a>发行日志</h2>
+
+<ul>
+<li>2013/06/06，整理提交了V0.1.1代码和相关技术文档。</li>
+</ul><h2>
+<a name="-5" class="anchor" href="#-5"><span class="octicon octicon-link"></span></a>授权说明</h2>
+
+<p>FastDCS使用GNU General Public License V3通用公共授权。</p>
+
+<ul>
+<li>允许以任何目的自由运行此程序;</li>
+<li>允许以学习为目的，对程序进行修改的自由;</li>
+<li>允许再发行软件副本的自由;</li>
+<li>允许改进此软件，并公开发布改进的自由;</li>
+<li>软件自始至终都以开放源代码形式发布;</li>
+<li>软件不得用作商业发售;</li>
+<li>更多授权说明请浏览通用性公开许可证(General Public License，简称GPL)。</li>
+</ul><p>Copyright (C) 2013, Liu Xun. <a href="mailto:my@liuxun.org">my@liuxun.org</a></p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/liuxunorg/FastDCS/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/liuxunorg/FastDCS/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/liuxunorg/FastDCS"></a> is maintained by <a href="https://github.com/liuxunorg">liuxunorg</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>FastDCS是什么？</h3>
-
-<p>FastDCS是一个开源的高性能分布式计算系统（DCS）。</p>
-<p>它的主要功能包括：服务器集群调度，并行计算，分布式服务，采用高性能和高可用性的设计，它可以解决海量数据的计算和需要分布式服务方面的问题。</p>
-<p>FastDCS适合用于图片和视频流的实时分析，数据挖掘和数据分析等业务。</p>
-
-<p>目前的FastDCS的版本号 <code>0.4.0.1</code></p>
-
-<h3>Support or Contact</h3>
-
-<p>登陆<a href="http://liuxun.org/fastdcs.html">http://liuxun.org/fastdcs.html</a>了解更多或者联系<code>my#liuxun.org</code>。</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">FastDCS maintained by <a href="https://github.com/liuxunorg">liuxunorg</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
+  
   </body>
 </html>
