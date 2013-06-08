@@ -1,4 +1,4 @@
-FastDCS是一个使用C++开发的分布式计算系统，使用它可以快速的解决海量数据的并行计算问题。 
+FastDCS是一个使用C++开发的开源分布式计算系统，使用它可以快速的解决海量数据的并行计算问题。 
 
 FastDCS的设计宗旨是用最快捷的方式完成分布式计算系统的开发和部署工作，如同它的名称Fast Distributed Computing System。
 
@@ -38,7 +38,7 @@ FastDCS通过简洁而有效的设计，为开发者提供一套简洁而有效�
 - 2013/06/06，整理提交了V0.1.1代码和相关技术文档。
 
 ## 授权说明 ##
-FastDCS使用GNU General Public License V3通用公共授权发布。
+FastDCS源代码通过GNU General Public License V3进行发布。
 
 
 Copyright (C) 2013, Liu Xun. <my@liuxun.org>
