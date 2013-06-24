@@ -42,7 +42,6 @@ FastDCS通过简洁而有效的设计，为开发者提供一套简洁而有效�
 - 使用Protobuf完成数据结构的定义和数据的编解码；
 - 提供计算任务的导入、自定义计算和计算结果的导出这三个UDF函数；
 
-
 ## 资源列表
 - [FastDCS架构介绍](https://github.com/liuxunorg/FastDCS/wiki/FastDCS%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D)
 - [FastDCS开发说明](https://github.com/liuxunorg/FastDCS/wiki/FastDCS%E5%BC%80%E5%8F%91%E8%AF%B4%E6%98%8E)
