@@ -37,8 +37,36 @@ FastDCS通过简洁而有效的设计，为开发者提供一套简洁而有效�
 ## 发行日志 ##
 - 2013/06/06，整理提交了V0.1.1代码和相关技术文档。
 
-## 授权说明 ##
+## 版本特性
+- 使用epoll完成网络通讯，实现更高的网络处理能力；
+
+- 使用Protobuf完成数据结构的定义和数据的编解码；
+
+- 提供计算任务的导入、自定义计算和计算结果的导出这三个UDF函数；
+
+
+## 资源列表
+
+- [FastDCS架构介绍](https://github.com/liuxunorg/FastDCS/wiki/FastDCS%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D)
+
+- [FastDCS开发说明](https://github.com/liuxunorg/FastDCS/wiki/FastDCS%E5%BC%80%E5%8F%91%E8%AF%B4%E6%98%8E)
+
+- [FastDCS开发实例](https://github.com/liuxunorg/FastDCS/wiki/FastDCS%E5%BC%80%E5%8F%91%E5%AE%9E%E4%BE%8B)
+
+## 关于作者
+
+FastDCS的作者刘勋，有着超过10年的软件行业和互联网行业开发和架构经历，2008年-2012年和朋友一起共同创办[瑞读网](http://www.ieread.com)是国内最早期的数字出版云服务提供商，在创业期间开发的FastDCS系统为瑞读网的长期稳定的运营发挥了巨大的作用。目前作者在杭州从事安防行业的云计算系统的开发工作，对大数据、分布式系统有着比较深入的研究。
+
+**联系作者**
+
+作者将对FastDCS进行长期的维护和持续的升级，如果你在使用FastDCS出现问题或有更好的意见和建议，欢迎使用以下联系方式：
+
+1.  在FastDCS的[开发博客](http://liuxun.org)中提出你的问题；
+
+2.  给作者 my#liuxun.org （需要将#换成@）发邮件；
+
+3.  加入FastDCS的QQ群：62471504；
+
+## 版权说明
+
 FastDCS源代码通过GNU General Public License V3进行发布。
-
-
-Copyright (C) 2013, Liu Xun. <my#liuxun.org>
