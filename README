@@ -1,15 +1,35 @@
-FastDCS是一个使用C++开发的开源分布式计算系统，使用它可以快速的解决海量数据的并行计算问题。 
+---
+layout: post
+title: "FastDCS - 分布式计算系统介绍"
+date: 2014-03-23 10:00
+comments: true
+categories: 
+  - FastDCS
+tags: 
+  - FastDCS
+---
 
-FastDCS的设计宗旨是用最快捷的方式完成分布式计算系统的开发和部署工作，如同它的名称Fast Distributed Computing System。
+FastDCS是一个使用C++开发的轻量级的分布式计算系统，使用它可以解决海量数据的计算和需要分布式服务方面的问题。
 
-FastDCS通过简洁而有效的设计，为开发者提供一套简洁而有效的分布式计算框架，开发者只需要定制由FastDCS提供的三个用户自定义UDF函数（User defined function），就可以完成整个分布式系统的开发工作，FastDCS同样也是非常容易进行部署的，开发者可以轻松的将FastDCS系统部署在很多台Linux服务器中的，FastDCS会自动将这些Linux服务器建立起服务集群，以分布式运行的方式完成开发者的计算任务。
 
-## 系统组成结构 ##
+##1 背景简介
+FastDCS最初是为了解决[瑞读网](http://www.ieread.com)的文件格式转换工作而开发的，瑞读网是一家提供数字阅读的服务提供商，每天约有10万份Office文档和上千份期刊杂志排版文件需要转换成PDF、JPG、FLASH、HTML、Txt和ePub等文件格式，瑞读网将FastDCS部署在4台服务器上，从2008年至2012年累计提供转换服务7千万次，生成各式文件数40亿，总量300TB的数据；
+
+2013年FastDCS进行了代码重构，大幅度提升了系统的性能和可靠性，并将代码和相关设计文档全部开源。
+
+##2 系统特性
+- FastDCS是一个轻量级的分布式计算系统，开发者使用它可以快速的完成开发和部署工作，如同系统的名称Fast Distributed Computing System。
+
+- FastDCS适合用于需要长期运行的计算处理业务，如瑞读网提供了长达4年的在线文档转换服务，它和MapReduce模式的批处理系统有很大的区别。
+
+- FastDCS通过简洁而有效的设计，为开发者提供一套简洁而有效的分布式计算框架，开发者只需要定制由FastDCS提供的三个用户自定义UDF函数（User defined function），就可以完成整个分布式系统的开发工作，FastDCS同样也是非常容易进行部署的，开发者可以轻松的将FastDCS系统部署在很多台Linux服务器中的，FastDCS会自动将这些Linux服务器建立起服务集群，以分布式运行的方式完成开发者的计算任务。
+
+##3 系统组成结构
 从系统组成划分的角度来看，FastDCS包括了管理节点（Master）和工作节点（Worker）
 - 管理节点Master对整个计算集群的服务状态、任务分发、计算调度等服务进行管理。
 - 工作节点Worker作为计算单元接受Master服务器的管理，完成整个计算集群的计算任务。
 
-## 系统运行方式 ##
+##4 系统运行方式
 - 管理节点Master在多台服务器中以主从模式运行
   - 至少需要提供一台Master节点，建议同时运行三台Master节点会达到最佳的可靠性和性能。
   - 多台Master节点会自动选举出主节点（Primary master）和从节点（Secondary master）。
@@ -18,43 +38,48 @@ FastDCS通过简洁而有效的设计，为开发者提供一套简洁而有效�
   - 至少需要提供一台Worker节点，目前可以支持上百台的Woker节点进行并行工作。
   - Worker节点会主动寻找负载较小的Master节点，接受计算任务调度，进行计算任务运算。
 
-## 计算任务调度方式 ##
+##5 计算任务调度方式
 - Primary Master节点管理了服务集群中的所有计算任务
 - Primary Master节点将一部分计算任务副本分发给Secondary master节点进行管理，当一段时间内该任务未完成计算，Primary Master节点将会注销这个任务副本，并将这个副本重新分发给其他的Secondary master节点。
-- Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[注1]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。
+- Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[<font color="#F00"><b>注1</b> </font>]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。
 - 当服务集群中空闲时，Primary Master节点将会通过调用开发者自定义ImportTaskUDF函数，将新的计算任务导入到计算集群中等待处理。
 - 当Worker节点接收到Master节点分发的计算任务时，将会通过调用开发者自定义ComputingUDF函数，完成计算任务的运算处理。
 - 当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统中。
 
-[注1]：此处的Master节点是指Primary Master或Secondary master节点。
+<font color="#F00"><b>[注1]</b></font>：此处的Master服务器是指Primary Master或Secondary master服务器。
 
-## 系统容错处理 ##
+##6 系统容错处理
 - 当Primary master节点发生异常停止服务时，Secondary master节点会重新选举出新的Primary master节点接替工作，避免了服务集群的单点故障的问题，当故障服务器恢复后可以重新参加到集群的工作中。
 - Worker节点可以根据环境的需要进行动态的增减，服务集群的计算能力和计算周期也随之发生线性的变化。
 - 在Master和Worker节点发生动态调整的时候，只会影响极小部分的计算任务，不会影响服务集群的正常运行，受影响的小部分计算结果也会由系统判断是否采纳或重新进行计算。
 - 当发生网络延时或Worker节点异常造成计算任务超时的情况下，Master节点会将计算任务重新分发给其他Worker节点，即使多台Worker节点运算同一个任务时，Master也只会采纳其中有效的计算结果。
 
-## 发行日志 ##
-- 2013/06/06，整理提交了V0.1.1代码和相关技术文档。
+##7 发行日志
+- 2013/06/06，整理提交了V0.1.1代码和相关技术文档。[[下载地址]](https://github.com/liuxunorg/FastDCS)
 
-## 版本特性
+##8 版本特性
 - 使用epoll完成网络通讯，实现更高的网络处理能力；
 - 使用Protobuf完成数据结构的定义和数据的编解码；
 - 提供计算任务的导入、自定义计算和计算结果的导出这三个UDF函数；
 
-## 资源列表
-- [FastDCS架构介绍](https://github.com/liuxunorg/FastDCS/wiki/FastDCS%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D)
-- [FastDCS开发说明](https://github.com/liuxunorg/FastDCS/wiki/FastDCS%E5%BC%80%E5%8F%91%E8%AF%B4%E6%98%8E)
-- [FastDCS开发实例](https://github.com/liuxunorg/FastDCS/wiki/FastDCS%E5%BC%80%E5%8F%91%E5%AE%9E%E4%BE%8B)
+##9 资源列表
+- [FastDCS架构介绍](http://liuxun.org/blog/fastdcs-architecture/)
+- [FastDCS开发说明](http://liuxun.org/blog/fastdcs-develop/)
+- [FastDCS开发实例](http://liuxun.org/blog/fastdcs-demo/)
+- [FastDCS问题回答](http://liuxun.org/blog/fastdcs-qa/)
 
-## 关于作者
+##10 关于作者
 FastDCS的作者刘勋，有着超过10年的软件行业和互联网行业开发和架构经历，2008年-2012年和朋友一起共同创办 [瑞读网](http://www.ieread.com) 是国内最早期的数字出版云服务提供商，在创业期间开发的FastDCS系统为瑞读网的长期稳定的运营发挥了巨大的作用。目前作者在杭州从事安防行业的云计算系统的开发工作，对大数据、分布式系统有着比较深入的研究。
 
 **联系作者**
+
 作者将对FastDCS进行长期的维护和持续的升级，如果你在使用FastDCS出现问题或有更好的意见和建议，欢迎使用以下联系方式：
-1.  在FastDCS的 [开发博客](http://liuxun.org) 中提出你的问题；
+
+1.  在FastDCS的 [开发博客](http://liuxun.org/blog/fastdcs-qa/) 中提出你的问题；
+
 2.  给作者 my#liuxun.org （需要将#换成@）发邮件；
+
 3.  加入FastDCS的QQ群：62471504；
 
-## 版权说明
+##11 版权说明
 FastDCS源代码通过GNU General Public License V3进行发布。
