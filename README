@@ -1,19 +1,8 @@
----
-layout: post
-title: "FastDCS - 分布式计算系统介绍"
-date: 2014-03-23 10:00
-comments: true
-categories: 
-  - FastDCS
-tags: 
-  - FastDCS
----
-
 FastDCS是一个使用C++开发的轻量级的分布式计算系统，使用它可以解决海量数据的计算和需要分布式服务方面的问题。
 
 
 ##1 背景简介
-FastDCS最初是为了解决[瑞读网](http://www.ieread.com)的文件格式转换工作而开发的，瑞读网是一家提供数字阅读的服务提供商，每天约有10万份Office文档和上千份期刊杂志排版文件需要转换成PDF、JPG、FLASH、HTML、Txt和ePub等文件格式，瑞读网将FastDCS部署在4台服务器上，从2008年至2012年累计提供转换服务7千万次，生成各式文件数40亿，总量300TB的数据；
+FastDCS最初是为了解决 [瑞读网](http://www.ieread.com) 的文件格式转换工作而开发的，瑞读网是一家提供数字阅读的服务提供商，每天约有10万份Office文档和上千份期刊杂志排版文件需要转换成PDF、JPG、FLASH、HTML、Txt和ePub等文件格式，瑞读网将FastDCS部署在4台服务器上，从2008年至2012年累计提供转换服务7千万次，生成各式文件数40亿，总量300TB的数据；
 
 2013年FastDCS进行了代码重构，大幅度提升了系统的性能和可靠性，并将代码和相关设计文档全部开源。
 
