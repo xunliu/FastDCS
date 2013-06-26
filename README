@@ -30,7 +30,7 @@ FastDCS最初是为了解决 [瑞读网](http://www.ieread.com) 的文件格式�
 ##5 计算任务调度方式
 - Primary Master节点管理了服务集群中的所有计算任务
 - Primary Master节点将一部分计算任务副本分发给Secondary master节点进行管理，当一段时间内该任务未完成计算，Primary Master节点将会注销这个任务副本，并将这个副本重新分发给其他的Secondary master节点。
-- Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[<font color="#F00"><b>注1</b> </font>]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。
+- Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[<font color="#F00"><b>注1</b></font>]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。
 - 当服务集群中空闲时，Primary Master节点将会通过调用开发者自定义ImportTaskUDF函数，将新的计算任务导入到计算集群中等待处理。
 - 当Worker节点接收到Master节点分发的计算任务时，将会通过调用开发者自定义ComputingUDF函数，完成计算任务的运算处理。
 - 当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统中。
@@ -52,6 +52,7 @@ FastDCS最初是为了解决 [瑞读网](http://www.ieread.com) 的文件格式�
 - 提供计算任务的导入、自定义计算和计算结果的导出这三个UDF函数；
 
 ##9 资源列表
+- [FastDCS系统介绍](http://liuxun.org/blog/fastdcs/)
 - [FastDCS架构介绍](http://liuxun.org/blog/fastdcs-architecture/)
 - [FastDCS开发说明](http://liuxun.org/blog/fastdcs-develop/)
 - [FastDCS开发实例](http://liuxun.org/blog/fastdcs-demo/)
@@ -64,7 +65,7 @@ FastDCS的作者刘勋，有着超过10年的软件行业和互联网行业开�
 
 作者将对FastDCS进行长期的维护和持续的升级，如果你在使用FastDCS出现问题或有更好的意见和建议，欢迎使用以下联系方式：
 
-1.  在FastDCS的 [开发博客](http://liuxun.org/blog/fastdcs-qa/) 中提出你的问题；
+1.  在FastDCS的 [开发博客](/blog/fastdcs-qa/) 中提出你的问题；
 
 2.  给作者 my#liuxun.org （需要将#换成@）发邮件；
 
