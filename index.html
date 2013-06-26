@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <title>FastDCS by liuxunorg</title>
+    <title>FastDCS - 分布式计算系统</title>
   </head>
 
   <body>
@@ -77,7 +77,7 @@
 <ul>
 <li>Primary Master节点管理了服务集群中的所有计算任务</li>
 <li>Primary Master节点将一部分计算任务副本分发给Secondary master节点进行管理，当一段时间内该任务未完成计算，Primary Master节点将会注销这个任务副本，并将这个副本重新分发给其他的Secondary master节点。</li>
-<li>Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[<b>注1</b> ]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。</li>
+<li>Primary Master和Secondary master节点都会分别处理各自管辖的Worker节点的服务请求，将计算任务进行下发，当一段时间内该任务未完成计算，Master[<b>注1</b>]节点将会注销这个任务副本，并将这个副本重新分发给其他的Woker节点。</li>
 <li>当服务集群中空闲时，Primary Master节点将会通过调用开发者自定义ImportTaskUDF函数，将新的计算任务导入到计算集群中等待处理。</li>
 <li>当Worker节点接收到Master节点分发的计算任务时，将会通过调用开发者自定义ComputingUDF函数，完成计算任务的运算处理。</li>
 <li>当服务集群中的计算任务计算完成后，Primary Master节点将会通过调用开发者自定义ExportTaskUDF函数，将计算结果导出到外部存储系统中。</li>
@@ -132,6 +132,6 @@
       </section>
     </div>
 
-    
+    <P style="display:none"><script src="http://s94.cnzz.com/stat.php?id=4107571&web_id=4107571" language="JavaScript"></script></p>
   </body>
 </html>
